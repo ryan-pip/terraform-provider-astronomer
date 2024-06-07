@@ -66,6 +66,7 @@ resource "astronomer_deployment" "standard_deployment" {
 - `is_cicd_enforced` (Boolean) Whether the Deployment requires that all deploys are made through CI/CD.
 - `is_dag_deploy_enabled` (Boolean) Whether the Deployment has DAG deploys enabled.
 - `is_high_availability` (Boolean) Whether the Deployment is configured for high availability. If `true`, multiple scheduler pods will be online.
+- `is_development_mode` (Boolean) Whether the Deployment is in development mode.
 - `name` (String) The Deployment's name.
 - `resource_quota_cpu` (String) The CPU quota for worker Pods when running the Kubernetes executor or KubernetesPodOperator. If current CPU usage across all workers exceeds the quota, no new worker Pods can be scheduled. Units are in number of CPU cores.
 - `resource_quota_memory` (String) The memory quota for worker Pods when running the Kubernetes executor or KubernetesPodOperator. If current memory usage across all workers exceeds the quota, no new worker Pods can be scheduled. Units are in `Gi`. This value must always be twice the value of `ResourceQuotaCpu`.

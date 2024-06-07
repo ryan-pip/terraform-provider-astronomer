@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -46,6 +47,7 @@ type DeploymentResourceModel struct {
 	IsCicdEnforced       types.Bool                 `tfsdk:"is_cicd_enforced"`
 	IsDagDeployEnabled   types.Bool                 `tfsdk:"is_dag_deploy_enabled"`
 	IsHighAvailability   types.Bool                 `tfsdk:"is_high_availability"`
+	IsDevelopmentMode    types.Bool                 `tfsdk:"is_development_mode"`
 	Name                 types.String               `tfsdk:"name"`
 	Region               types.String               `tfsdk:"region"`
 	ResourceQuotaCpu     types.String               `tfsdk:"resource_quota_cpu"`
@@ -154,6 +156,13 @@ func (r *DeploymentResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"is_high_availability": schema.BoolAttribute{
 				MarkdownDescription: "Whether the Deployment is configured for high availability. If `true`, multiple scheduler pods will be online.",
 				Required:            true,
+			},
+			"is_development_mode": schema.BoolAttribute{
+				MarkdownDescription: "Whether the Deployment is in development mode. If `true`, the Deployment will not be monitored for health.",
+				Required:            true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
 			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The Deployment's name.",
@@ -285,6 +294,7 @@ func (r *DeploymentResource) Create(ctx context.Context, req resource.CreateRequ
 		IsCicdEnforced:       data.IsCicdEnforced.ValueBool(),
 		IsDagDeployEnabled:   data.IsDagDeployEnabled.ValueBool(),
 		IsHighAvailability:   data.IsHighAvailability.ValueBool(),
+		IsDevelopmentMode:    data.IsDevelopmentMode.ValueBool(),
 		Name:                 data.Name.ValueString(),
 		Region:               data.Region.ValueString(),
 		ResourceQuotaCpu:     data.ResourceQuotaCpu.ValueString(),
@@ -351,6 +361,7 @@ func (r *DeploymentResource) Read(ctx context.Context, req resource.ReadRequest,
 	data.IsCicdEnforced = types.BoolValue(deployment.IsCicdEnforced)
 	data.IsDagDeployEnabled = types.BoolValue(deployment.IsDagDeployEnabled)
 	data.IsHighAvailability = types.BoolValue(deployment.IsHighAvailability)
+	data.IsDevelopmentMode = types.BoolValue(deployment.IsDevelopmentMode)
 
 	data.Name = types.StringValue(deployment.Name)
 	if data.Region.ValueString() != "" || deployment.Region != "" {
@@ -460,6 +471,7 @@ func (r *DeploymentResource) Update(ctx context.Context, req resource.UpdateRequ
 		IsCicdEnforced:       data.IsCicdEnforced.ValueBool(),
 		IsDagDeployEnabled:   data.IsDagDeployEnabled.ValueBool(),
 		IsHighAvailability:   data.IsHighAvailability.ValueBool(),
+		IsDevelopmentMode:    data.IsDevelopmentMode.ValueBool(),
 		Name:                 data.Name.ValueString(),
 		ResourceQuotaCpu:     data.ResourceQuotaCpu.ValueString(),
 		ResourceQuotaMemory:  data.ResourceQuotaMemory.ValueString(),

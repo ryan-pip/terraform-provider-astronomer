@@ -8,6 +8,7 @@ resource "astronomer_deployment" "standard_deployment" {
   is_dag_deploy_enabled   = true
   is_cicd_enforced        = true
   is_high_availability    = true
+  is_development_mode     = false
   name                    = "Test Deployment TF"
   region                  = "us-east-1"
   resource_quota_cpu      = "160"

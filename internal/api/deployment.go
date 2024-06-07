@@ -75,6 +75,7 @@ type DeploymentResponse struct {
 	IsCicdEnforced           bool                          `json:"isCicdEnforced"`
 	IsDagDeployEnabled       bool                          `json:"isDagDeployEnabled"`
 	IsHighAvailability       bool                          `json:"isHighAvailability"`
+	IsDevelopmentMode        bool                          `json:"isDevelopmentMode"`
 	Name                     string                        `json:"name"`
 	Namespace                string                        `json:"namespace"`
 	OidcIssuerUrl            string                        `json:"oidcIssuerUrl"`
@@ -136,6 +137,7 @@ type DeploymentCreateRequest struct {
 	IsCicdEnforced       bool                         `json:"isCicdEnforced"`
 	IsDagDeployEnabled   bool                         `json:"isDagDeployEnabled"`
 	IsHighAvailability   bool                         `json:"isHighAvailability"`
+	IsDevelopmentMode    bool                         `json:"IsDevelopmentMode"`
 	Name                 string                       `json:"name"`
 	Region               string                       `json:"region,omitempty"`
 	ResourceQuotaCpu     string                       `json:"resourceQuotaCpu"`
@@ -158,6 +160,7 @@ type DeploymentUpdateRequest struct {
 	IsCicdEnforced       bool                         `json:"isCicdEnforced"`
 	IsDagDeployEnabled   bool                         `json:"isDagDeployEnabled"`
 	IsHighAvailability   bool                         `json:"isHighAvailability"`
+	IsDevelopmentMode    bool                         `json:"IsDevelopmentMode"`
 	Name                 string                       `json:"name"`
 	ResourceQuotaCpu     string                       `json:"resourceQuotaCpu"`
 	ResourceQuotaMemory  string                       `json:"resourceQuotaMemory"`
